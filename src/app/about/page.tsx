@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import profileImg from '@/public/profile.jpg'; // kendi görselini /public içine koy
 
 export default function AboutPage() {
   return (
@@ -7,15 +6,16 @@ export default function AboutPage() {
       <div>
         <h1 className="text-4xl font-bold text-blue-700 mb-4">Hi, I'm Arslan 👋</h1>
         <p className="text-gray-700 text-lg leading-relaxed">
-          I'm a lifestyle and finance coach helping individuals gain clarity, structure, and purpose. With a tech-savvy approach, I blend digital tools and human habits to drive personal transformation.
+          I help people transform their lifestyle and financial habits through personalized coaching.
         </p>
       </div>
       <div className="w-full">
         <Image
-          src={profileImg}
+          src="/profile.jpg" // ✅ Doğrudan public yolunu kullan
           alt="Coach Arslan"
+          width={600}
+          height={400}
           className="rounded-xl shadow-lg"
-          priority
         />
       </div>
     </div>
