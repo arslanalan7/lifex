@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Navbar from "./components/Navbar";
+import Footer from './components/Footer';
 import "./globals.css";
 
 export default function Template({ children }: { children: ReactNode }) {
@@ -24,6 +25,7 @@ export default function Template({ children }: { children: ReactNode }) {
           {children}
         </motion.div>
       </AnimatePresence>
+      <Footer />
     </>
   );
 }

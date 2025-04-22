@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import ParticlesBackground from './components/ParticlesBackground'; // Ensure this file exists or adjust the path
+import ParticlesBackground from './components/ParticlesBackground';
 
 export default function Home() {
   return (
@@ -43,10 +43,9 @@ export default function Home() {
           <Image
             src="/hero-image.png" // `public/` klasörüne eklenmeli
             alt="Coaching visual"
-            width={600}
-            height={600}
+            width={500}
+            height={500}
             className="rounded-xl shadow-xl"
-            priority
           />
         </motion.div>
       </div>
