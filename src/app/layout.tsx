@@ -41,6 +41,12 @@ export const metadata = {
     creator: '@arslonix',
     images: ['/lifex-og.jpg'],
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-32x32.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 };
 
 
