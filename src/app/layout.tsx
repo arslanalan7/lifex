@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'LifeX – Lifestyle & Finance Coaching',
   description: 'Personalized coaching to help you take control of your lifestyle and money.',
   keywords: ['lifestyle coaching', 'finance coaching', 'LifeX', 'Arslan ALAN'],
@@ -25,7 +26,7 @@ export const metadata = {
     siteName: 'LifeX',
     images: [
       {
-        url: '/lifex-og.jpg', // 🔁 public klasöründe bu görseli ekle
+        url: '/lifex-og.jpg',
         width: 1200,
         height: 630,
         alt: 'LifeX Hero Image',
@@ -49,15 +50,10 @@ export const metadata = {
   manifest: '/site.webmanifest',
 };
 
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="font-sans bg-white dark:bg-gray-900 text-black dark:text-white transition-colors">
         {children}
       </body>
     </html>

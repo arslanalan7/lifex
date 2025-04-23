@@ -6,7 +6,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: Geist, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: Geist Mono, ui-monospace, SFMono-Regular, monospace;
+}
+
 body {
   color: #111;
-  font-family: system-ui, sans-serif;
 }
