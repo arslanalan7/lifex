@@ -53,13 +53,15 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.4 }}
           className="hidden md:block"
         >
-          <Image
-            src="/hero-image.png"
-            alt="Coaching visual"
-            width={500}
-            height={500}
-            className="rounded-xl"
-          />
+          <div className="p-3 rounded-xl bg-white/10 backdrop-blur-sm shadow-md">
+            <Image
+              src="/hero-image.png"
+              alt="Coaching visual"
+              width={500}
+              height={500}
+              className="rounded-lg"
+            />
+          </div>
         </motion.div>
       </div>
     </div>
