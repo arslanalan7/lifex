@@ -31,40 +31,40 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-xl mx-auto p-6 text-center">
-      <h1 className="text-4xl font-bold text-red-600 mb-4">Let's Connect!</h1>
-      <p className="text-gray-700 mb-6">
+      <h1 className="text-4xl font-bold text-red-600 dark:text-red-400 mb-4">Let's Connect!</h1>
+      <p className="text-gray-700 dark:text-gray-300 mb-6">
         Have a question or want to schedule a call? Fill out the form below!
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4 text-left">
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Name</label>
+          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
           <input
             name="name"
             type="text"
             value={formData.name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300"
           />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>
+          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
           <input
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300"
           />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Message</label>
+          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
           <textarea
             name="message"
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none resize-none"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none resize-none dark:text-gray-300"
           />
         </div>
 

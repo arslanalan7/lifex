@@ -6,6 +6,7 @@ import { FaInstagram, FaLinkedin, FaBars } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import DarkModeToggle from './DarkModeToggle';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
+    { href: '/testimonials', label: 'Testimonials' },
     { href: '/contact', label: 'Contact' },
   ];
 
@@ -38,7 +40,7 @@ export default function Navbar() {
             width={120}
             height={40}
             priority
-            className="cursor-pointer"
+            className="cursor-pointer transition dark:brightness-150"
           />
         </Link>
 
@@ -61,6 +63,7 @@ export default function Navbar() {
 
         {/* Social Icons (Desktop) */}
         <div className="hidden md:flex items-center gap-4">
+          <DarkModeToggle />
           <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-pink-500 transition">
             <FaInstagram size={20} />
           </a>
@@ -112,6 +115,7 @@ export default function Navbar() {
                 <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-700 transition">
                   <FaLinkedin size={20} />
                 </a>
+                <DarkModeToggle />
               </div>
             </div>
           </motion.div>

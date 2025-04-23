@@ -4,8 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
-  background: #fff;
   color: #111;
   font-family: system-ui, sans-serif;
 }

@@ -1,13 +1,23 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaEnvelope, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 mt-20">
+    <footer className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700 shadow-sm z-50">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 text-sm text-center sm:text-left">
         {/* Brand Section */}
         <div>
-          <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-3">LifeX</h2>
+          <Link href="/" className="text-2xl font-bold text-blue-700 dark:text-blue-400">
+            <Image
+              src="/lifex-logo.png"
+              alt="LifeX logo"
+              width={120}
+              height={40}
+              priority
+              className="cursor-pointer transition dark:brightness-150"
+            />
+          </Link>
           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed max-w-xs">
             Lifestyle & Finance Coaching for a balanced and empowered life.
           </p>

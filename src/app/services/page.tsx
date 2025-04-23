@@ -24,11 +24,11 @@ export default function ServicesPage() {
         {services.map((service, idx) => (
           <div
             key={idx}
-            className="p-6 bg-white rounded-xl shadow-md text-center hover:shadow-lg transition"
+            className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md text-center hover:shadow-lg transition"
           >
             <div className="text-5xl mb-4">{service.icon}</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">{service.title}</h2>
-            <p className="text-gray-600">{service.desc}</p>
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-2">{service.title}</h2>
+            <p className="text-gray-600 dark:text-gray-300">{service.desc}</p>
           </div>
         ))}
       </div>
