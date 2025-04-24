@@ -9,24 +9,46 @@ export default function ContactPage() {
     message: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const { name, email, message } = formData;
-
     if (!name || !email || !message) {
       alert('Please fill in all fields before sending.');
       return;
     }
 
-    const mailtoLink = `mailto:hello@arslionix.com?subject=Message from ${name}&body=${encodeURIComponent(message)}%0A%0AFrom: ${email}`;
-    window.location.href = mailtoLink;
+    setLoading(true);
+    setStatus('idle');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error('Form error');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,7 +66,8 @@ export default function ContactPage() {
             type="text"
             value={formData.name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300"
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300 dark:bg-gray-800"
           />
         </div>
         <div>
@@ -54,7 +77,8 @@ export default function ContactPage() {
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300"
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300 dark:bg-gray-800"
           />
         </div>
         <div>
@@ -64,16 +88,25 @@ export default function ContactPage() {
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none resize-none dark:text-gray-300"
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none resize-none dark:text-gray-300 dark:bg-gray-800"
           />
         </div>
 
         <button
           type="submit"
-          className="bg-red-600 text-white px-6 py-2 rounded-md font-medium hover:bg-red-700 transition"
+          disabled={loading}
+          className="bg-red-600 text-white px-6 py-2 rounded-md font-medium hover:bg-red-700 transition disabled:opacity-50"
         >
-          Send Message
+          {loading ? 'Sending...' : 'Send Message'}
         </button>
+
+        {status === 'success' && (
+          <p className="text-green-600 mt-2">Message sent successfully!</p>
+        )}
+        {status === 'error' && (
+          <p className="text-red-500 mt-2">There was an error sending your message.</p>
+        )}
       </form>
     </div>
   );
