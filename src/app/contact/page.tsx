@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function ContactPage() {
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,6 +43,7 @@ export default function ContactPage() {
       if (res.ok) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
+        router.push('/thank-you'); // ✅ Yönlendirme burada!
       } else {
         throw new Error('Form error');
       }
@@ -101,9 +105,6 @@ export default function ContactPage() {
           {loading ? 'Sending...' : 'Send Message'}
         </button>
 
-        {status === 'success' && (
-          <p className="text-green-600 mt-2">Message sent successfully!</p>
-        )}
         {status === 'error' && (
           <p className="text-red-500 mt-2">There was an error sending your message.</p>
         )}
