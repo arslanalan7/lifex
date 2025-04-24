@@ -1,25 +1,32 @@
-import Image from 'next/image';
+import AboutPage from './AboutClient';
 
-export default function AboutPage() {
-  return (
-    <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-      <div>
-        <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-400 mb-4">
-          Hi, I'm Jack 👋
-        </h1>
-        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-          I help people transform their lifestyle and financial habits through personalized coaching.
-        </p>
-      </div>
-      <div className="w-full">
-        <Image
-          src="/profile.jpg" // ✅ Doğrudan public yolunu kullan
-          alt="Coach Arslan"
-          width={600}
-          height={400}
-          className="rounded-xl shadow-lg"
-        />
-      </div>
-    </div>
-  );
+export const metadata = {
+  title: 'About – LifeX Coaching',
+  description: 'Learn more about Jack and his mission to help people improve their lifestyle and financial well-being.',
+  openGraph: {
+    title: 'About Jack – LifeX',
+    description: 'Meet the lifestyle and finance coach behind LifeX.',
+    url: 'https://lifex.live/about',
+    siteName: 'LifeX',
+    images: [
+      {
+        url: '/lifex-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'About LifeX Coach',
+      },
+    ],
+    type: 'profile',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About – LifeX Coaching',
+    description: 'Learn more about Jack’s background and experience.',
+    images: ['/lifex-og.jpg'],
+    creator: '@arslonix',
+  },
+};
+
+export default function Page() {
+  return <AboutPage />;
 }
