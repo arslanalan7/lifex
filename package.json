@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/cosmos": "^4.3.0",
     "@tailwindcss/postcss": "^4.1.4",
     "autoprefixer": "^10.4.21",
     "framer-motion": "^12.7.4",
