@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 
 const geistSans = Geist({
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="font-sans bg-white dark:bg-gray-900 text-black dark:text-white transition-colors">
         {children}
+        <Toaster position="top-center" reverseOrder={false} /> /*Böylece her sayfada toast bildirimlerini kullanabileceğiz.*/
       </body>
     </html>
   );

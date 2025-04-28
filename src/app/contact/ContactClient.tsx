@@ -43,7 +43,7 @@ export default function ContactPage() {
       if (res.ok) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
-        router.push('/thank-you'); // ✅ Yönlendirme burada!
+        router.push('/thank-you');
       } else {
         throw new Error('Form error');
       }
@@ -63,6 +63,7 @@ export default function ContactPage() {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4 text-left">
+        {/* Name */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
           <input
@@ -74,6 +75,7 @@ export default function ContactPage() {
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300 dark:bg-gray-800"
           />
         </div>
+        {/* Email */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
           <input
@@ -85,6 +87,7 @@ export default function ContactPage() {
             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 outline-none dark:text-gray-300 dark:bg-gray-800"
           />
         </div>
+        {/* Message */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
           <textarea
@@ -97,6 +100,7 @@ export default function ContactPage() {
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
@@ -105,6 +109,7 @@ export default function ContactPage() {
           {loading ? 'Sending...' : 'Send Message'}
         </button>
 
+        {/* Error Message */}
         {status === 'error' && (
           <p className="text-red-500 mt-2">There was an error sending your message.</p>
         )}

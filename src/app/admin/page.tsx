@@ -1,57 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { Dialog } from '@headlessui/react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
+import { toast } from 'react-hot-toast';
 
 export default function AdminPage() {
+  const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState(false); // Modal Aç/Kapa
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
     content: '',
     image: '',
   });
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const [success, setSuccess] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  /*Confirm Deletion*/
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState<string | null>(null);
+  /*Edit Posts*/
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [postToEdit, setPostToEdit] = useState<any>(null);
+
+
+  const fetchPosts = async () => {
+    const res = await fetch('/api/posts');
+    const data = await res.json();
+    setPosts(data);
+    setLoadingPosts(false);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
-    // 1. Önizleme için geçici URL oluştur
+
     const preview = URL.createObjectURL(file);
     setPreviewUrl(preview);
-  
-    // 2. Azure'a upload işlemi
-    const formData = new FormData();
-    formData.append('file', file);
-  
+
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', file);
+
     const res = await fetch('/api/upload', {
       method: 'POST',
-      body: formData,
+      body: formDataUpload,
     });
-  
+
     const data = await res.json();
     setFormData(prev => ({ ...prev, image: data.url }));
-  };
-   
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const { title, excerpt, content, image } = formData;
-
     if (!title || !excerpt || !content) {
-      alert('Please fill all required fields.');
+      toast.error('Please fill all required fields!');
       return;
     }
 
@@ -65,116 +84,258 @@ export default function AdminPage() {
       });
 
       if (res.ok) {
-        setSuccess(true); // ✅ Success toast'ı tetikle
+        toast.success('🎉 Blog post created!');
         setFormData({ title: '', excerpt: '', content: '', image: '' });
-        setTimeout(() => {
-          setSuccess(false);
-          router.push('/blog');
-        }, 2000); // 2 saniye gösterip sonra blog sayfasına yönlendir
+        setPreviewUrl(null);
+        closeModal();
+        fetchPosts();
       } else {
-        throw new Error('Error creating post');
+        throw new Error('Post creation failed');
       }
-    } catch (err) {
-      console.error(err);
-      alert('Something went wrong.');
+    } catch (error) {
+      console.error(error);
+      toast.error('Something went wrong!');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleDelete = async (id: string) => {
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (!confirmed) return;
+
+    const res = await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+
+    if (res.ok) {
+      toast.success('🗑️ Post deleted!');
+      fetchPosts();
+    } else {
+      toast.error('Failed to delete post!');
+    }
+  };
+
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400 text-center">Create a New Post</h1>
-      {success && (
-        <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-md text-center animate-fade-in-down">
-            🎉 Post created successfully!
-        </div>
-        )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block mb-1 font-medium">Title *</label>
-          <input
-            name="title"
-            type="text"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-800 dark:text-gray-200"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Excerpt *</label>
-          <input
-            name="excerpt"
-            type="text"
-            value={formData.excerpt}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-800 dark:text-gray-200"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Select an image to upload *</label>
-          <input
-            name="image"
-            type="file"
-            onChange={handleFileChange}
-            className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-800 dark:text-gray-200"
-           />
-           {previewUrl && (
-            <div className="mt-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Preview:</p>
-                <img src={previewUrl} alt="Preview" className="w-48 rounded-lg shadow-md" />
-            </div>
-            )}
-        </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Content *</label>
-          <textarea
-            name="content"
-            rows={6}
-            value={formData.content}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-800 dark:text-gray-200 resize-none"
-          />
-        </div>
-
+    <div className="max-w-5xl mx-auto p-6">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400">Manage Posts</h1>
         <button
-            type="submit"
-            disabled={loading}
-            className="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-medium transition disabled:opacity-50"
-            >
-            {loading && (
-                <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                >
-                <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                ></circle>
-                <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                ></path>
-                </svg>
-            )}
-            {loading ? 'Submitting...' : 'Create Post'}
+          onClick={openModal}
+          className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md font-semibold transition"
+        >
+          ➕ Add Post
         </button>
+      </div>
 
-      </form>
+      {/* --- Modal --- */}
+      <Dialog open={isOpen} onClose={closeModal} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+        <Dialog.Panel className="w-full max-w-2xl rounded bg-white dark:bg-gray-800 p-6">
+          <Dialog.Title className="text-2xl font-bold mb-4 text-center">Create New Post</Dialog.Title>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Post Title"
+              className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
+              required
+            />
+            <input
+              name="excerpt"
+              value={formData.excerpt}
+              onChange={handleChange}
+              placeholder="Post Excerpt"
+              className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
+              required
+            />
+            <textarea
+              name="content"
+              value={formData.content}
+              onChange={handleChange}
+              placeholder="Post Content"
+              rows={5}
+              className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100 resize-none"
+              required
+            />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
+            />
+            {previewUrl && (
+              <img src={previewUrl} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+            )}
+            <div className="flex gap-4 justify-end">
+              <button
+                type="button"
+                onClick={closeModal}
+                className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition disabled:opacity-50"
+              >
+                {loading ? 'Submitting...' : 'Create'}
+              </button>
+            </div>
+          </form>
+        </Dialog.Panel>
+      </Dialog>
+
+      {/* --- Post Listesi --- */}
+      <h2 className="text-2xl font-bold mt-10 mb-4">Existing Posts</h2>
+
+      {loadingPosts ? (
+        <p>Loading posts...</p>
+      ) : (
+        <div className="space-y-4">
+          {posts.map((post) => (
+            <div key={post.id} className="border p-4 rounded-md shadow-sm flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold">{post.title}</h3>
+                <p className="text-sm text-gray-500">{post.excerpt}</p>
+              </div>
+              <div className="flex gap-4">
+              <button
+                onClick={() => {
+                  setEditModalOpen(true);
+                  setPostToEdit(post); // seçilen post verisini set et
+                }}
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Edit
+              </button>
+
+                <button
+                  onClick={() => {
+                    setConfirmModalOpen(true);
+                    setPostToDelete(post.id);
+                  }}
+                  className="text-red-600 hover:text-red-800 font-medium"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={confirmModalOpen} onClose={() => setConfirmModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+        <Dialog.Panel className="w-full max-w-sm rounded bg-white dark:bg-gray-800 p-6 text-center">
+          <Dialog.Title className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100">
+            ⚡ Are you sure you want to delete this post?
+          </Dialog.Title>
+
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => setConfirmModalOpen(false)}
+              className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                if (!postToDelete) return;
+                const res = await fetch(`/api/posts/${postToDelete}`, {
+                  method: 'DELETE',
+                });
+                if (res.ok) {
+                  toast.success('🗑️ Post deleted!');
+                  fetchPosts();
+                } else {
+                  toast.error('❌ Failed to delete!');
+                }
+                setConfirmModalOpen(false);
+                setPostToDelete(null);
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-semibold transition"
+            >
+              Yes, Delete
+            </button>
+          </div>
+        </Dialog.Panel>
+      </Dialog>
+
+      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+        <Dialog.Panel className="w-full max-w-2xl rounded bg-white dark:bg-gray-800 p-6">
+          <Dialog.Title className="text-2xl font-bold mb-4 text-center">Edit Post</Dialog.Title>
+
+          {postToEdit && (
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const res = await fetch(`/api/posts/${postToEdit.id}`, {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    title: postToEdit.title,
+                    excerpt: postToEdit.excerpt,
+                    content: postToEdit.content,
+                  }),
+                });
+                if (res.ok) {
+                  toast.success('🎉 Post updated!');
+                  setEditModalOpen(false);
+                  setPostToEdit(null);
+                  fetchPosts();
+                } else {
+                  toast.error('❌ Failed to update!');
+                }
+              }}
+              className="space-y-4"
+            >
+              <input
+                type="text"
+                value={postToEdit.title}
+                onChange={(e) => setPostToEdit({ ...postToEdit, title: e.target.value })}
+                className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
+                placeholder="Title"
+                required
+              />
+              <input
+                type="text"
+                value={postToEdit.excerpt}
+                onChange={(e) => setPostToEdit({ ...postToEdit, excerpt: e.target.value })}
+                className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
+                placeholder="Excerpt"
+                required
+              />
+              <textarea
+                value={postToEdit.content}
+                onChange={(e) => setPostToEdit({ ...postToEdit, content: e.target.value })}
+                rows={5}
+                className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100 resize-none"
+                placeholder="Content"
+                required
+              />
+              <div className="flex gap-4 justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditModalOpen(false);
+                    setPostToEdit(null);
+                  }}
+                  className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          )}
+        </Dialog.Panel>
+      </Dialog>
+
+
     </div>
+    
   );
 }
