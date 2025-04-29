@@ -1,6 +1,7 @@
-import ContactPage from './ContactClient';
+import { Metadata } from 'next';
+import ContactClient from './ContactClient';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Contact – LifeX Coaching',
   description: 'Get in touch to schedule a free discovery session or ask your questions.',
   openGraph: {
@@ -28,5 +29,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <ContactPage />;
+  return <ContactClient />;
 }
