@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {
@@ -23,10 +23,10 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const body = await req.json();
 
     const { resource } = await container.item(id, id).read();
@@ -52,10 +52,10 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {

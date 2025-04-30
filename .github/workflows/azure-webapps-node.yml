@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      NEXT_PUBLIC_SITE_URL: lifex-app-gzbug7e6g4gxdmdz.westeurope-01.azurewebsites.net ||
 
     steps:
       - name: Checkout repo
