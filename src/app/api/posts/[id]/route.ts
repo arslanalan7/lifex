@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
 import { container } from '@/lib/cosmosClient';
 import { blobClient } from '@/lib/blobstorage'; // yeni bir blob bağlantı dosyası yaptık varsayalım!
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {
@@ -22,11 +22,11 @@ export async function GET(
 }
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     const body = await req.json();
 
     const { resource } = await container.item(id, id).read();
@@ -51,11 +51,11 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {
