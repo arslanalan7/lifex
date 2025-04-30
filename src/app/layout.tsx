@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="font-sans bg-white dark:bg-gray-900 text-black dark:text-white transition-colors">
         {children}
-        <Toaster position="top-center" reverseOrder={false} /> /*Böylece her sayfada toast bildirimlerini kullanabileceğiz.*/
+        <Toaster position="top-center" reverseOrder={false} /> {/*Böylece her sayfada toast bildirimlerini kullanabileceğiz.*/}
       </body>
     </html>
   );

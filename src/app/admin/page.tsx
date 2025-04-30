@@ -4,6 +4,7 @@ import { Dialog } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Post } from '@/types/posts';
+import Image from 'next/image';
 
 export default function AdminPage() {
 
@@ -147,7 +148,13 @@ export default function AdminPage() {
               className="w-full border border-gray-300 rounded px-4 py-2 dark:bg-gray-700 dark:text-gray-100"
             />
             {previewUrl && (
-              <img src={previewUrl} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+              <Image
+                src={previewUrl}
+                alt="Preview"
+                className="w-32 h-32 object-cover rounded-md"
+                width={128}
+                height={128}
+              />
             )}
             <div className="flex gap-4 justify-end">
               <button

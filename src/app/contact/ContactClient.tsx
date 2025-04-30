@@ -105,7 +105,7 @@ export default function ContactPage() {
         className="max-w-2xl mx-auto text-center space-y-8"
       >
         <div>
-          <h1 className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">Let's Connect!</h1>
+          <h1 className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">Let&apos;s Connect!</h1>
           <p className="text-gray-700 dark:text-gray-300 text-lg">
             Have a question or want to schedule a call? Fill out the form below!
           </p>
