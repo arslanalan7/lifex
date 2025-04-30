@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Post } from '@/types/posts';
 
 async function getPosts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ''}/api/posts`, { cache: 'no-store' });
@@ -15,7 +16,7 @@ export default async function BlogPage() {
       <h1 className="text-4xl font-bold mb-10 text-center text-blue-700 dark:text-blue-400">Our Latest Blog Posts</h1>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post: any) => (
+        {posts.map((post: Post) => (
           <Link
             key={post.id}
             href={`/blog/${post.id}`}

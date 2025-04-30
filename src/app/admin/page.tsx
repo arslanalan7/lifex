@@ -2,11 +2,10 @@
 
 import { Dialog } from '@headlessui/react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { Post } from '@/types/posts';
 
 export default function AdminPage() {
-  const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false); // Modal Aç/Kapa
   const [formData, setFormData] = useState({
@@ -18,14 +17,14 @@ export default function AdminPage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   /*Confirm Deletion*/
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   /*Edit Posts*/
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [postToEdit, setPostToEdit] = useState<any>(null);
+  const [postToEdit, setPostToEdit] = useState<Post | null>(null);
 
 
   const fetchPosts = async () => {
@@ -97,20 +96,6 @@ export default function AdminPage() {
       toast.error('Something went wrong!');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    const confirmed = window.confirm('Are you sure you want to delete this post?');
-    if (!confirmed) return;
-
-    const res = await fetch(`/api/posts/${id}`, { method: 'DELETE' });
-
-    if (res.ok) {
-      toast.success('🗑️ Post deleted!');
-      fetchPosts();
-    } else {
-      toast.error('Failed to delete post!');
     }
   };
 

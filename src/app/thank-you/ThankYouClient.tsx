@@ -16,7 +16,7 @@ export default function ThankYouPage() {
         <FaCheckCircle className="text-green-500 text-6xl mb-4" />
         <h1 className="text-4xl font-bold mb-2">Thanks for Reaching Out!</h1>
         <p className="text-lg mb-6 max-w-lg">
-          Your message has been sent successfully. I’ll get back to you as soon as possible!
+          Your message has been sent successfully. I&apos;ll get back to you as soon as possible!
         </p>
         <Link
           href="/"

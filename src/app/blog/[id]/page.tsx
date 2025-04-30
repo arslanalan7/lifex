@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Post } from '@/types/posts';
 
 async function getPost(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ''}/api/posts`, { cache: 'no-store' });
   const posts = await res.json();
-  return posts.find((post: any) => post.id === id);
+  return posts.find((post: Post) => post.id === id);
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
