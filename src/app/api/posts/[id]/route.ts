@@ -2,14 +2,14 @@ import { container } from '@/lib/cosmosClient';
 import { blobClient } from '@/lib/blobstorage';
 import { NextRequest, NextResponse } from 'next/server';
 
-type Context = { params: { id: string } };
+type RouteParams = { id: string };
 
 export async function GET(
   req: NextRequest,
-  context: Context
+  { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     const { resource } = await container.item(id, id).read();
 
@@ -26,10 +26,10 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  context: Context
+  { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const body = await req.json();
 
     const { resource } = await container.item(id, id).read();
@@ -55,10 +55,10 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  context: Context
+  { params }: { params: RouteParams }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {
