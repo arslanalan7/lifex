@@ -1,5 +1,5 @@
 import { container } from '@/lib/cosmosClient';
-import { blobClient } from '@/lib/blobstorage'; // yeni bir blob bağlantı dosyası yaptık varsayalım!
+import { blobClient } from '@/lib/blobstorage';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
