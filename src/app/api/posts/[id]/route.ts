@@ -4,10 +4,10 @@ import { blobClient } from '@/lib/blobstorage'; // yeni bir blob bağlantı dosy
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     const { resource } = await container.item(id, id).read();
 
     if (!resource) {
