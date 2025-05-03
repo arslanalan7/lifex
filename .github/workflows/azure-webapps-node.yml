@@ -25,6 +25,8 @@ jobs:
         run: npm install
 
       - name: Validate environment variables
+        env:
+            NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
         run: |
             if [ -z "$NEXT_PUBLIC_SITE_URL" ]; then
               echo "NEXT_PUBLIC_SITE_URL is not set. Please configure it in the repository secrets."
