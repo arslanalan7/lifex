@@ -4,6 +4,9 @@ import { Post } from '@/types/posts';
 
 async function getPosts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ''}/api/posts`, { cache: 'no-store' });
+  if (!res) {
+    throw new Error("NEXT_PUBLIC_SITE_URL environment variable is not defined.");
+  }
   const posts = await res.json();
   return posts;
 }
