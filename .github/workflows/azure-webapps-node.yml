@@ -68,7 +68,7 @@ jobs:
             cp -r public deploy/public
             
             # copy any config/manifests you need
-            cp next.config.js package.json deploy/
+            cp next.config.ts package.json deploy/
 
       - name: Zip deployment package
         run: cd deploy && zip -r ../release.zip .
