@@ -16,7 +16,16 @@ jobs:
 
     # <-- Inject the env var at the job level
     env:
-      NEXT_PUBLIC_SITE_URL: 'https://lifex-app-gzbug7e6g4gxdmdz.westeurope-01.azurewebsites.net'
+      EMAIL_USER:                       ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS:                       ${{ secrets.EMAIL_PASS }}
+      COSMOS_ENDPOINT:                  ${{ secrets.COSMOS_ENDPOINT }}
+      COSMOS_KEY:                       ${{ secrets.COSMOS_KEY }}
+      COSMOS_DATABASE:                  ${{ secrets.COSMOS_DATABASE }}
+      COSMOS_CONTAINER:                 ${{ secrets.COSMOS_CONTAINER }}
+      NEXT_PUBLIC_SITE_URL:             ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      AZURE_STORAGE_CONNECTION_STRING:  ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      AZURE_STORAGE_CONTAINER_NAME:     ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
+      AZURE_STORAGE_ACCOUNT_NAME:       ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
 
     steps:
       - name: Checkout repo
