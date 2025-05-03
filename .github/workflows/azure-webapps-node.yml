@@ -9,8 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # <-- Bind this job to your “Production” environment so its secrets become available
+    environment: Production
     permissions:
       contents: read
+
+    # <-- Inject the env var at the job level
+    env:
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
 
     steps:
       - name: Checkout repo
@@ -24,18 +30,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Validate environment variables
-        env:
-            NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      - name: Validate environment variable
         run: |
-            if [ -z "$NEXT_PUBLIC_SITE_URL" ]; then
-              echo "NEXT_PUBLIC_SITE_URL is not set. Please configure it in the repository secrets."
-              exit 1
-            fi
+          if [ -z "$NEXT_PUBLIC_SITE_URL" ]; then
+            echo "❌ NEXT_PUBLIC_SITE_URL is not set. Please configure it in the Production environment’s secrets."
+            exit 1
+          fi
 
       - name: Build Next.js app
-        env:
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
         run: npm run build
 
       - name: Prepare deployment package
@@ -59,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: Production
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
