@@ -100,6 +100,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'lifex-app'
-          slot-name: 'Production'
+          #slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCC377C08C7C488A9E33D7D1BDB165D1 }}
