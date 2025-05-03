@@ -102,4 +102,4 @@ jobs:
           app-name: 'lifex-app'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_100c9c1bcd2b497282a7cd4123c5a327 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCC377C08C7C488A9E33D7D1BDB165D1 }}
