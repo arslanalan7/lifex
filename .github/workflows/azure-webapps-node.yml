@@ -36,9 +36,12 @@ jobs:
             echo "❌ NEXT_PUBLIC_SITE_URL is not set. Please configure it in the Production environment’s secrets."
             exit 1
           fi
-
+      
+      - name: Debug Environment Variables
+        run: echo "NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL"
+      
       - name: Build Next.js app
-        run: npm run build
+        run: NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL npm run build
 
       - name: Prepare deployment package
         run: |
