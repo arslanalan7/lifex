@@ -9,12 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # <-- Bind this job to your “Production” environment so its secrets become available
     environment: Production
     permissions:
       contents: read
 
-    # <-- Inject the env var at the job level
     env:
       EMAIL_USER:                       ${{ secrets.EMAIL_USER }}
       EMAIL_PASS:                       ${{ secrets.EMAIL_PASS }}
@@ -39,36 +37,38 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Validate environment variable
+      - name: Validate NEXT_PUBLIC_SITE_URL
         run: |
           if [ -z "$NEXT_PUBLIC_SITE_URL" ]; then
-            echo "❌ NEXT_PUBLIC_SITE_URL is not set. Please configure it in the Production environment’s secrets."
+            echo "❌ NEXT_PUBLIC_SITE_URL is not set."
             exit 1
           fi
-      
+
       - name: Debug Environment Variables
         run: echo "NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL"
-      
+
       - name: Build Next.js app
-        run: NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL npm run build
+        run: npm run build
 
       - name: Prepare deployment package
         run: |
-            # create top‐level deploy folder
-            mkdir -p deploy
-            
-            # copy the standalone server build into deploy/
-            cp -r .next/standalone/* deploy/
-            
-            # make sure deploy/.next/static exists, then copy your static assets
-            mkdir -p deploy/.next/static
-            cp -r .next/static/* deploy/.next/static/
-            
-            # copy the public folder too
-            cp -r public deploy/public
-            
-            # copy any config/manifests you need
-            cp next.config.ts package.json deploy/
+          mkdir -p deploy
+
+          # Copy the standalone build (standalone/ includes its own package.json & server.js)
+          cp -r .next/standalone/* deploy/
+
+          # Copy your static assets into the same structure
+          mkdir -p deploy/.next/static
+          cp -r .next/static/* deploy/.next/static/
+
+          # Copy public/ contents
+          if [ -d public ]; then
+            mkdir -p deploy/public
+            cp -r public/* deploy/public/
+          fi
+
+          # (Optional) Copy next.config.js or .ts if you need it at runtime
+          cp next.config.js deploy/
 
       - name: Zip deployment package
         run: cd deploy && zip -r ../release.zip .
@@ -95,11 +95,14 @@ jobs:
       - name: Unzip artifact
         run: unzip release.zip
 
+      - name: Azure Login using Publish Profile
+        uses: azure/login@v1
+        with:
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCC377C08C7C488A9E33D7D1BDB165D1 }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'lifex-app'
-          #slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCC377C08C7C488A9E33D7D1BDB165D1 }}
