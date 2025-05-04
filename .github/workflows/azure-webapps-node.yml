@@ -68,7 +68,7 @@ jobs:
           fi
 
           # (Optional) Copy next.config.js or .ts if you need it at runtime
-          cp next.config.js deploy/
+          cp next.config.ts deploy/
 
       - name: Zip deployment package
         run: cd deploy && zip -r ../release.zip .
