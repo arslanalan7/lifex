@@ -29,7 +29,7 @@ export default function AboutPage() {
             Helping You Live Better – Physically, Mentally & Financially
           </h1>
           <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4">
-            I'm Jack – a coach who blends personal transformation with real-world financial wisdom to help you take control of your life.
+            I&apos;m Jack – a coach who blends personal transformation with real-world financial wisdom to help you take control of your life.
           </p>
           <ul className="text-gray-700 dark:text-gray-300 mb-4 space-y-2">
             <li className="flex items-center gap-2"><FaCertificate /> Certified Financial & Lifestyle Coach</li>
@@ -37,7 +37,7 @@ export default function AboutPage() {
             <li className="flex items-center gap-2"><FaGlobe /> Clients Across 5+ Countries</li>
           </ul>
           <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-            Whether you're aiming for a healthier routine or better money management, my mission is to empower you with tools and insights to live your best life.
+            Whether you&apos;re aiming for a healthier routine or better money management, my mission is to empower you with tools and insights to live your best life.
           </p>
         </div>
         <div className="relative">
