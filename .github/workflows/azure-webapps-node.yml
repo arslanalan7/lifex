@@ -55,7 +55,7 @@ jobs:
             mkdir -p deploy
 
             # 1) Copy the standalone build (includes package.json, server.js, node_modules)
-            cp -r .next/standalone/* deploy/
+            cp -r .next/standalone/. deploy/
 
             # 2) Patch the start script to run server.js instead of next
             sed -i 's|"start": "next start"|"start": "node server.js"|' deploy/package.json
@@ -71,7 +71,7 @@ jobs:
             fi
 
             # (Optional) Copy next.config.js or .ts if you need it at runtime
-            cp next.config.ts deploy/
+            # cp next.config.ts deploy/
 
       - name: Zip deployment package
         run: cd deploy && zip -r ../release.zip .
