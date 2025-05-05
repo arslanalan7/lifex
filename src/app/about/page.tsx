@@ -1,30 +1,49 @@
 import AboutPage from './AboutClient';
 
 export const metadata = {
-  title: 'About – LifeX Coaching',
-  description: 'Learn more about Jack and his mission to help people improve their lifestyle and financial well-being.',
+  title: 'About Jack – LifeX Coaching',
+  description: 'Discover how Jack empowers people to transform their lives with personalized coaching for better habits, financial freedom, and mindful living.',
+  keywords: [
+    'lifestyle coaching',
+    'financial coach',
+    'habit change',
+    'personal coaching',
+    'LifeX',
+    'Jack Anderson',
+    'well-being coach',
+    'financial transformation',
+    'accountability coaching'
+  ],
+  authors: [{ name: 'Jack Anderson', url: 'https://lifex.live/about' }],
+  creator: 'Jack Anderson',
+  publisher: 'LifeX Coaching',
+
   openGraph: {
-    title: 'About Jack – LifeX',
-    description: 'Meet the lifestyle and finance coach behind LifeX.',
+    title: 'Meet Jack – Your Lifestyle & Finance Coach | LifeX',
+    description: 'Explore Jack’s coaching philosophy and how he helps clients build better routines and financial habits through actionable strategies.',
     url: 'https://lifex.live/about',
-    siteName: 'LifeX',
+    siteName: 'LifeX Coaching',
     images: [
       {
         url: '/lifex-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'About LifeX Coach',
+        alt: 'Jack – Lifestyle & Financial Coach',
       },
     ],
     type: 'profile',
+    locale: 'en_US',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'About – LifeX Coaching',
-    description: 'Learn more about Jack’s background and experience.',
+    title: 'About Jack – LifeX Coaching',
+    description: 'Who is Jack? Learn how he helps clients achieve mindful and financially empowered lives.',
     images: ['/lifex-og.jpg'],
     creator: '@arslonix',
   },
+
+  metadataBase: new URL('https://lifex.live'),
 };
 
 export default function Page() {

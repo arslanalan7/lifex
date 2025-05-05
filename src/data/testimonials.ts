@@ -1,7 +1,7 @@
 export const testimonials = [
     {
       name: "Sophie R.",
-      quote: "Working with Arslan was life-changing. I feel more organized and motivated.",
+      quote: "Working with Jack was life-changing. I feel more organized and motivated.",
       image: "/sophie.jpg",
     },
     {
